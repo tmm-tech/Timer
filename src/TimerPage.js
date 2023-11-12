@@ -17,7 +17,7 @@ const TimerPage = () => {
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [bgColor, setBgColor] = useState("");
-  const audioRef = useRef(null);
+
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -58,7 +58,7 @@ const TimerPage = () => {
       return () => clearInterval(interval);
     } else if (isActive && time === 0) {
       setIsActive(false);
-      audioRef.current.play();
+     
     }
   }, [isActive, time]);
 
@@ -71,7 +71,6 @@ const TimerPage = () => {
       setBgColor("none");
     } else if (time <= 5) {
       setBgColor("red");
-      <audio ref={audioRef} src="/mixkit-clock-countdown-bleeps-916.wav" />;
     } else if (time <= halfTime && time >= quarterTime) {
       setBgColor("green");
     } else if (time <= quarterTime && time >= 5) {
