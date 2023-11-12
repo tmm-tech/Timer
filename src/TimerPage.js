@@ -1,15 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Link} from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlay,
   faPause,
   faStop,
   faClock,
-  faArrowRight
+  faPlus,
+  faFilePdf
 } from "@fortawesome/free-solid-svg-icons";
 import "./TimerPage.css";
 
 const TimerPage = () => {
+
   const [timeInput, setTimeInput] = useState(0);
   const [time, setTime] = useState(0);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -17,7 +20,7 @@ const TimerPage = () => {
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [bgColor, setBgColor] = useState("");
-
+  const [timerData, setTimerData] = useState([]);
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -44,6 +47,13 @@ const TimerPage = () => {
   const stopTimer = () => {
     setIsActive(false);
     setIsPaused(false);
+    const newData = {
+      time: timeInput,
+      duration: isPaused ? time : timeInput * 60,
+      details: detailsInput,
+      color: bgColor
+    };
+    setTimerData((prevData) => [...prevData, newData]);
     setTimeInput(0);
     setTime(0);
     setBgColor("");
@@ -58,7 +68,6 @@ const TimerPage = () => {
       return () => clearInterval(interval);
     } else if (isActive && time === 0) {
       setIsActive(false);
-     
     }
   }, [isActive, time]);
 
@@ -67,7 +76,7 @@ const TimerPage = () => {
     const halfTime = totalSeconds / 2;
     const quarterTime = totalSeconds * 0.25;
 
-    if (time == 0) {
+    if (time === 0) {
       setBgColor("none");
     } else if (time <= 5) {
       setBgColor("red");
@@ -82,6 +91,14 @@ const TimerPage = () => {
 
   return (
     <div className={`timer-page ${bgColor}`}>
+      <Link
+        to={{
+          pathname: "/DataPage",
+          state: { timerData }
+        }}
+      >
+        <FontAwesomeIcon icon={faFilePdf} className="pdf-icon data-entry-icon" />
+      </Link>
       <div className="timer-container">
         <FontAwesomeIcon icon={faClock} className="clock-icon" />
         <div className="timer">{formatTime(time)}</div>
@@ -95,7 +112,7 @@ const TimerPage = () => {
         </div>
       </div>
       <button className="data-entry-icon" onClick={togglePopup}>
-        <FontAwesomeIcon icon={faArrowRight} />
+        <FontAwesomeIcon icon={faPlus} />
       </button>
       {isPopupOpen && (
         <div className="popup">
