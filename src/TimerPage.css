@@ -10,7 +10,13 @@
 .timer-page.none {
   background: linear-gradient(to bottom, #fff, #e5e9ec);
 }
-
+/* In your TimerPage.css or relevant stylesheet */
+.pdf-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px; /* Add some margin for spacing */
+}
 .timer-page.yellow {
   background-color: #ffc107; /* Darker yellow background color */
 }
